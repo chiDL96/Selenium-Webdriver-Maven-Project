@@ -86,7 +86,7 @@ public class Topic_05_Web_Browser {
         //Thuc te k dung: test GUI/ responsive (font/size/color/position/location/..)
         //Set vi tri cua browser so voi do phan giai man hinh (Resolution)
         driver.manage().window().getPosition();
-        driver.manage().window().setPosition(new Point((0,0)));
+        driver.manage().window().setPosition(new Point(0,0));
 
         //Mo browser voi kich thuoc la bao nhieu...
         //Test responsive
@@ -103,7 +103,7 @@ public class Topic_05_Web_Browser {
         driver.switchTo().alert();
 
         //Frame/ Iframe
-        driver.switchTo().frame(0)
+        driver.switchTo().frame(0);
 
         //Window/ tab
         driver.switchTo().window("");
