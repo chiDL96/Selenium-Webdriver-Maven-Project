@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class Topic_06_WebElement {
+public class Topic_06_Web_Element_P1 {
     WebDriver driver;
     String projectPath = System.getProperty("user.dir");
 

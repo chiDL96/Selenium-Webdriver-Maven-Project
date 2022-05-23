@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class Topic_05_Web_Browser {
+public class Topic_05_Web_Browser_P1 {
     WebDriver driver;
     String projectPath = System.getProperty("user.dir");
 
