@@ -94,5 +94,25 @@ public class Topic_06_WebElement {
         //Hien thi: nguoi dung nhin thayy day duoc, co kich thuoc cu the (chieu rong/ chieu cao)
         //Ap dung cho tat ca cac loai element: ...
         element.isDisplayed();
+
+        //Mong muon 1 element co the thao tac duoc len hoac ko
+        //Nguoc lai voi disable
+        //Thao tac duoc: Enable
+        //Khong thao tac duoc: Disabled
+        //Ap dung cho tat ca cac loai element
+
+        element.isEnabled();
+
+        //Mong muon 1 element da duoc chon hay chua
+        //Ap dung voi 1 vai loai element: Checkbox/ radio button/ dropdown (default)
+
+        element.isSelected();
+
+        //Click vao 1 element
+        //Button/ Link
+
+        element.click();
+
+
     }
 }
