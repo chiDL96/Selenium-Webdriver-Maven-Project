@@ -188,7 +188,11 @@ public class Topic_08_Web_Element_P2 {
         driver.get("https://login.mailchimp.com/signup/");
 
         driver.findElement(By.cssSelector("input#email")).sendKeys("automation@gmail.com");
-        driver.findElement(By.cssSelector("input#new_username")).sendKeys("automationFC");
+
+        WebElement username = driver.findElement(By.cssSelector("input#new_username"));
+        username.click();
+        username.clear();
+        username.sendKeys("automationFC");
 
 
         WebElement password = driver.findElement(By.id("new_password"));
