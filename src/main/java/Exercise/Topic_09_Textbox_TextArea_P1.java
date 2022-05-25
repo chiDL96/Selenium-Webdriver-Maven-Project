@@ -3,18 +3,15 @@ package Exercise;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WrapsDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.sql.Time;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Topic_09_Textbox_TextArea {
+public class Topic_09_Textbox_TextArea_P1 {
 
     WebDriver driver;
     String projectPath = System.getProperty("user.dir");
