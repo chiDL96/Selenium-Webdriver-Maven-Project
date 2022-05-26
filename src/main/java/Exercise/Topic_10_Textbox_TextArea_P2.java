@@ -1,18 +1,16 @@
 package Exercise;
 
-import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-public class Topic_09_Textbox_TextArea_P2 {
+public class Topic_10_Textbox_TextArea_P2 {
     WebDriver driver;
     String projectPath = System.getProperty("user.dir");
     String firstName = "Luvie", lastName = "Casa", employeeID, newFirstName = "Momo", newLastName = "Kobe";

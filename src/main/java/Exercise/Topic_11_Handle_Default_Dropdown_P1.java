@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class Topic_10_Handle_Default_Dropdown_P1 {
+public class Topic_11_Handle_Default_Dropdown_P1 {
     WebDriver driver;
     Select select;
     String firstName, lastName, day, month, year, companyName, emailAdress, password;
