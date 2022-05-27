@@ -1,5 +1,6 @@
 package Exercise;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Topic_14_Handle_Custom_Dropdown_P1 {
     WebDriver driver;
     WebDriverWait explicitWait;
+    JavascriptExecutor jsExecutor;
     String projectPath = System.getProperty("user.dir");
 
     @BeforeClass
@@ -26,6 +28,9 @@ public class Topic_14_Handle_Custom_Dropdown_P1 {
         //Luon khoi tao sau driver -> no can gia tri driver de khoi tao explicitWait len
         //Wait cho cac element theo dieu kien co san: visible/ invisible/ presence/ clickable/....
         explicitWait = new WebDriverWait(driver, 15);
+
+        //Ep kieu tuong minh trong java
+        jsExecutor = (JavascriptExecutor) driver;
 
         //Wait cho viec "tim" element: findElement/ findElements
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -42,11 +47,14 @@ public class Topic_14_Handle_Custom_Dropdown_P1 {
     public void TC_01(){
         driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 
-        String parentLocator = "number-button", childLocator = "ul#number-menu>li>div", expectedTextItem = "19";
-        selectItemInCustomDropdown(parentLocator, childLocator, expectedTextItem);
+//        String parentLocator = "number-button", childLocator = "ul#number-menu>li>div", expectedTextItem = "19";
+        selectItemInCustomDropdown("number-button", "ul#number-menu>li>div","10");
+        Assert.assertEquals(driver.findElement(By.id("number-button")).getText(), "10");
+
+        selectItemInCustomDropdown("number-button", "ul#number-menu>li>div","19");
+        Assert.assertEquals(driver.findElement(By.id("number-button")).getText(), "19");
 
 
-        Assert.assertEquals(driver.findElement(By.id("number-button")).getText(), expectedTextItem);
     }
 
     public void selectItemInCustomDropdown(String parentLocator, String childLocator, String expectedTextItem)  {
@@ -80,8 +88,9 @@ public class Topic_14_Handle_Custom_Dropdown_P1 {
             String actualTextItem = item.getText();
             //Thay item can chon thi click vao -> so sanh voi item mong muon sau do click vao
             if (actualTextItem.equals(expectedTextItem)) {
+                jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
                 item.click();
-                sleepInSecond(3);
+                sleepInSecond(1);
                 //Chua thoat ra khoi vong lap
                 break;
             }
