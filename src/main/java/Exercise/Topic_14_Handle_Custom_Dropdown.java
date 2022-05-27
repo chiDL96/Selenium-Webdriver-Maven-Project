@@ -34,10 +34,10 @@ public class Topic_14_Handle_Custom_Dropdown {
 
     }
 
-//    @AfterClass
-//    public void afterClass(){
-//        driver.close();
-//    }
+    @AfterClass
+    public void afterClass(){
+        driver.close();
+    }
 
     @Test
     public void TC_01(){
