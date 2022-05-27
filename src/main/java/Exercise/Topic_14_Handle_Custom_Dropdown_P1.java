@@ -1,7 +1,6 @@
 package Exercise;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
@@ -15,7 +14,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Topic_14_Handle_Custom_Dropdown {
+public class Topic_14_Handle_Custom_Dropdown_P1 {
     WebDriver driver;
     WebDriverWait explicitWait;
     String projectPath = System.getProperty("user.dir");
@@ -44,20 +43,17 @@ public class Topic_14_Handle_Custom_Dropdown {
         driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 
         String parentLocator = "number-button", childLocator = "ul#number-menu>li>div", expectedTextItem = "19";
-        try {
-            selectItemInCustomDropdown(parentLocator, childLocator, expectedTextItem);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        selectItemInCustomDropdown(parentLocator, childLocator, expectedTextItem);
+
 
         Assert.assertEquals(driver.findElement(By.id("number-button")).getText(), expectedTextItem);
     }
 
-    public void selectItemInCustomDropdown(String parentLocator, String childLocator, String expectedTextItem) throws InterruptedException {
+    public void selectItemInCustomDropdown(String parentLocator, String childLocator, String expectedTextItem)  {
         //Click vao dropdown
         driver.findElement(By.id(parentLocator)).click();
+        sleepInSecond(3);
 
-        Thread.sleep(Long.parseLong("1000"));
         //Cho cho tat ca cac item con ben trong duoc load ra
         //By locator phai dai dien cho tat ca cac item con
         //Lay cai locator den cai the chua text item
@@ -85,10 +81,17 @@ public class Topic_14_Handle_Custom_Dropdown {
             //Thay item can chon thi click vao -> so sanh voi item mong muon sau do click vao
             if (actualTextItem.equals(expectedTextItem)) {
                 item.click();
-                Thread.sleep(Long.parseLong("1000"));
+                sleepInSecond(3);
                 //Chua thoat ra khoi vong lap
                 break;
             }
+        }
+    }
+    public void sleepInSecond(long TimeInSecond){
+        try {
+            Thread.sleep(TimeInSecond * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
