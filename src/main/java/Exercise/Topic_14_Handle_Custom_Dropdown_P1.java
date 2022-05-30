@@ -44,22 +44,59 @@ public class Topic_14_Handle_Custom_Dropdown_P1 {
     }
 
     @Test
-    public void TC_01(){
+    public void TC_01_JQuery(){
         driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 
 //        String parentLocator = "number-button", childLocator = "ul#number-menu>li>div", expectedTextItem = "19";
-        selectItemInCustomDropdown("number-button", "ul#number-menu>li>div","10");
+        selectItemInCustomDropdown("span#number-button", "ul#number-menu>li>div","10");
         Assert.assertEquals(driver.findElement(By.id("number-button")).getText(), "10");
 
-        selectItemInCustomDropdown("number-button", "ul#number-menu>li>div","19");
+        selectItemInCustomDropdown("span#number-button", "ul#number-menu>li>div","19");
         Assert.assertEquals(driver.findElement(By.id("number-button")).getText(), "19");
 
 
     }
 
+    @Test
+    public void TC_02_ReactJS(){
+        driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
+        selectItemInCustomDropdown("i.dropdown", "div.item>span","Stevie Feliciano");
+        Assert.assertEquals(driver.findElement(By.cssSelector("div.divider.text")).getText(), "Stevie Feliciano");
+
+        selectItemInCustomDropdown("i.dropdown", "div.item>span","Elliot Fu");
+        Assert.assertEquals(driver.findElement(By.cssSelector("div.divider.text")).getText(), "Elliot Fu");
+    }
+
+    @Test
+    public void TC_03_VueJS(){
+        driver.get("https://mikerodham.github.io/vue-dropdowns/");
+        selectItemInCustomDropdown("li.dropdown-toggle", "ul.dropdown-menu>li>a","Second Option");
+        Assert.assertEquals(driver.findElement(By.cssSelector("li.dropdown-toggle")).getText(), "Second Option");
+
+        selectItemInCustomDropdown("li.dropdown-toggle", "ul.dropdown-menu>li>a","First Option");
+        Assert.assertEquals(driver.findElement(By.cssSelector("li.dropdown-toggle")).getText(), "First Option");
+    }
+
+    @Test
+    public void TC_04_DefaultDropdown(){
+        driver.get("https://demo.nopcommerce.com/register");
+        selectItemInCustomDropdown("select[name='DateOfBirthDay']", "select[name='DateOfBirthDay']>option","6");
+        Assert.assertTrue(driver.findElement(By.xpath("//select[@name='DateOfBirthDay']/option[text()='6']")).isSelected());
+
+        selectItemInCustomDropdown("select[name='DateOfBirthYear']", "select[name='DateOfBirthYear']>option","1996");
+        Assert.assertTrue(driver.findElement(By.xpath("//select[@name='DateOfBirthYear']/option[text()='1996']")).isSelected());
+    }
+
+    @Test
+    public void TC_05_EditableDropdown(){
+        driver.get("https://react.semantic-ui.com/maximize/dropdown-example-search-selection/");
+        selectItemInCustomDropdown("input.search", "div.item>span","Bahamas");
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='divider text']")).getText(),"Bahamas");
+    }
+
     public void selectItemInCustomDropdown(String parentLocator, String childLocator, String expectedTextItem)  {
         //Click vao dropdown
-        driver.findElement(By.id(parentLocator)).click();
+        driver.findElement(By.cssSelector(parentLocator)).click();
         sleepInSecond(3);
 
         //Cho cho tat ca cac item con ben trong duoc load ra
@@ -75,20 +112,20 @@ public class Topic_14_Handle_Custom_Dropdown_P1 {
         //Khai bao tung element thi rat la nhieu, tong cong bao nhieu cai,..
         //Do do, minh se lay het tat ca cac item va luu vao 1 List Element
 
-        List<WebElement> allDropdownItems = driver.findElements(By.cssSelector("ul#number-menu>li>div"));
+        List<WebElement> allDropdownItems = driver.findElements(By.cssSelector(childLocator));
 
         //Duyet qua tung item
-        allDropdownItems.get(0).getText();
-        allDropdownItems.get(1).getText();
-        allDropdownItems.get(2).getText();
-        allDropdownItems.get(3).getText();
+//        allDropdownItems.get(0).getText();
+//        allDropdownItems.get(1).getText();
+//        allDropdownItems.get(2).getText();
+//        allDropdownItems.get(3).getText();
 
         //Duyet ngan gon bang Vong lap
         for (WebElement item : allDropdownItems) {
             String actualTextItem = item.getText();
             //Thay item can chon thi click vao -> so sanh voi item mong muon sau do click vao
             if (actualTextItem.equals(expectedTextItem)) {
-                jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
+//                jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
                 item.click();
                 sleepInSecond(1);
                 //Chua thoat ra khoi vong lap
@@ -96,6 +133,28 @@ public class Topic_14_Handle_Custom_Dropdown_P1 {
             }
         }
     }
+
+    public void enterItemInCustomDropdown(String editableLocator, String childLocator, String expectedTextItem)  {
+
+        driver.findElement(By.cssSelector(editableLocator)).sendKeys(expectedTextItem);
+        sleepInSecond(3);
+
+        explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(childLocator)));
+
+        List<WebElement> allDropdownItems = driver.findElements(By.cssSelector(childLocator));
+
+        for (WebElement item : allDropdownItems) {
+            String actualTextItem = item.getText();
+            if (actualTextItem.equals(expectedTextItem)) {
+//                jsExecutor.executeScript("arguments[0].scrollIntoView(true);", item);
+                item.click();
+                sleepInSecond(1);
+                break;
+            }
+        }
+    }
+
+
     public void sleepInSecond(long TimeInSecond){
         try {
             Thread.sleep(TimeInSecond * 1000);
