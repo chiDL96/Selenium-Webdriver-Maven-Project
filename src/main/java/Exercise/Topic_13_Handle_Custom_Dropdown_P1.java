@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Topic_14_Handle_Custom_Dropdown_P1 {
+public class Topic_13_Handle_Custom_Dropdown_P1 {
     WebDriver driver;
     WebDriverWait explicitWait;
     JavascriptExecutor jsExecutor;
