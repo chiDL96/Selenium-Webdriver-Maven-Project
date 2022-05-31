@@ -2,8 +2,8 @@ package Exercise;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -32,14 +32,31 @@ public class Topic_14_Button_Radio_Checkbox {
     public void tc_01_Button(){
         driver.get("https://www.fahasa.com/customer/account/create");
 
-        driver.findElement(By.xpath("//li[@class='popup-login-tab-item popup-login-tab-login']")).click();
-        Assert.assertFalse(driver.findElement(By.className("fhs-btn-register")).isDisplayed());
+        driver.findElement(By.cssSelector("li.popup-login-tab-login")).click();
+
+        By loginButtonBy = By.cssSelector("button.fhs-btn-login");
+
+        Assert.assertFalse(driver.findElement(loginButtonBy).isEnabled());
 
         driver.findElement(By.id("login_username")).sendKeys("chidl@unstatic.co");
-        driver.findElement(By.id("login_password")).sendKeys("123456");
+        driver.findElement(By.id("login_password")).sendKeys("12345678");
+        Assert.assertTrue(driver.findElement(loginButtonBy).isEnabled());
+        //getCssValue tra ra rgba, con tren web dag tra ra rgb
+        String loginButtonBackgroundColor = driver.findElement(loginButtonBy).getCssValue("background-color");
 
-        WebElement btnLogin = driver.findElement(By.xpath("//button[@class='fhs-btn-login']"));
-        Assert.assertTrue(btnLogin.isEnabled());
-        btnLogin.getCssValue("")
+        System.out.println(loginButtonBackgroundColor);
+        String loginButtonBackgroundColorHexa = Color.fromString(loginButtonBackgroundColor).asHex().toUpperCase();
+        String loginButtonBackgroundColorRGBA = Color.fromString(loginButtonBackgroundColor).asRgba();
+        sleepInSecond(1);
+        Assert.assertEquals(loginButtonBackgroundColorHexa, "#C92127");
+        Assert.assertEquals(loginButtonBackgroundColorRGBA, "rgba(201, 33, 39, 0.22)");
+    }
+
+    public void sleepInSecond(long TimeInSecond){
+        try {
+            Thread.sleep(TimeInSecond * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
