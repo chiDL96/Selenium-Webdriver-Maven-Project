@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Topic_14_Button_Radio_Checkbox {
+public class Topic_14_Default_Button_Radio_Checkbox {
     WebDriver driver;
     String projectPath = System.getProperty("user.dir");
 
@@ -123,7 +123,7 @@ public class Topic_14_Button_Radio_Checkbox {
     }
 
     @Test
-    public void TC_04_Default_RadioButton_p2(){
+    public void TC_05_Default_RadioButton_p2(){
         driver.get("https://demos.telerik.com/kendo-ui/radiobutton/index");
 
         By radioBtn = By.xpath("//label[text()='2.0 Petrol, 147kW']/preceding-sibling::input");
@@ -134,6 +134,7 @@ public class Topic_14_Button_Radio_Checkbox {
         } else driver.findElement(radioBtn).click();
 
     }
+
 
     public void sleepInSecond(long TimeInSecond){
         try {
