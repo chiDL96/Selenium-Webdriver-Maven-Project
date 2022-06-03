@@ -33,7 +33,7 @@ public class Topic_15_Custom_Radio_Checkbox {
     }
 
     @Test
-    public void TC_01_Custom_Checkbox_p1(){
+    public void TC_01_Custom_Checkbox(){
         driver.get("https://material.angular.io/components/checkbox/examples");
         //Cach 1:
         //Su dung the span de click, sau do dung the input de verify
@@ -48,13 +48,28 @@ public class Topic_15_Custom_Radio_Checkbox {
         //Su dung the input de click (javascript executor - k quan tam element bi che/ bi an), sau do su dung input de verify
         By checkedCheckbox1 = By.xpath("//span[text()='Checked']//preceding::input");
         jsExecutor.executeScript("arguments[0].click();",driver.findElement(checkedCheckbox1));
+        Assert.assertTrue(driver.findElement(checkedCheckbox1).isSelected());
+
+        By beforeRadio = By.xpath("//span[text()='Before']/preceding-sibling::span/input");
+        jsExecutor.executeScript("arguments[0].click();",driver.findElement(beforeRadio));
+        Assert.assertTrue(driver.findElement(beforeRadio).isSelected());
+
     }
 
+
     @Test
-    public void TC_05_Custom_Radio_p1(){
-        driver.get("https://material.angular.io/components/radio/examples");
+    public void TC_02_Custom_Radio(){
+        driver.get("https://docs.google.com/forms/d/e/1FAIpQLSfiypnd69zhuDkjKgqvpID9kwO29UCzeCVrGGtbNPZXQok0jA/viewform");
 
+        By hanoiRadio = By.xpath("//div[@aria-label='Hà Nội']");
+        driver.findElement(hanoiRadio).click();
+        sleepInSecond(2);
+        Assert.assertEquals(driver.findElement(hanoiRadio).getAttribute("aria-checked"),"true");
 
+        By miQuangCheckbox = By.xpath("//div[@aria-label='Mì Quảng']");
+        driver.findElement(miQuangCheckbox).click();
+        sleepInSecond(2);
+        Assert.assertEquals(driver.findElement(miQuangCheckbox).getAttribute("aria-checked"),"true");
     }
 
     public void sleepInSecond(long TimeInSecond){
