@@ -1,10 +1,12 @@
 package Exercise;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -15,6 +17,8 @@ import java.util.concurrent.TimeUnit;
 public class Topic_17_User_Interaction {
     WebDriver driver;
     Actions action;
+    JavascriptExecutor jsExecutor;
+    Select select;
     String projectPath = System.getProperty("user.dir");
 
     @BeforeClass
@@ -22,13 +26,14 @@ public class Topic_17_User_Interaction {
         System.setProperty("webdriver.chrome.driver", projectPath + "/BrowserDrivers/chromedriver");
         driver = new ChromeDriver();
         action = new Actions(driver);
+        jsExecutor = (JavascriptExecutor) driver;
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 
     @AfterClass
     public void afterClass(){
-        driver.close();
+//        driver.close();
     }
 
     @Test
@@ -75,6 +80,27 @@ public class Topic_17_User_Interaction {
 
     }
 
+    @Test
+    public void TC_04_Demo_JsExecutor(){
+        driver.get("https://www.honda.com.vn/o-to/du-toan-chi-phi");
+        WebElement banner = driver.findElement(By.xpath("//div[@class='div-cost-estimates']"));
+        WebElement carType = driver.findElement(By.id("selectize-input"));
+        WebElement carTypeSelected = driver.findElement(By.xpath("//a[text()='CITY RS (Đỏ)']"));
+        By city = By.id("province");
+        String citySelected = "Hà Nội";
+        By area = By.id("registration_fee");
+        String areaSelected = "Khu vực I";
+
+        jsExecutor.executeScript("arguments[0].scrollIntoView(true);", banner);
+        jsExecutor.executeScript("arguments[0].click();", carType);
+        jsExecutor.executeScript("arguments[0].click();", carTypeSelected);
+
+        select = new Select(driver.findElement(city));
+        select.selectByVisibleText(citySelected);
+
+        select = new Select(driver.findElement(area));
+        select.selectByVisibleText(areaSelected);
+    }
 
     public void sleepInSecond(long TimeInSecond){
         try {
