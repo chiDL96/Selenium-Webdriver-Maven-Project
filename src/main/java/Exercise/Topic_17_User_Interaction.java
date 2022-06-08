@@ -57,19 +57,21 @@ public class Topic_17_User_Interaction {
     @Test
     public void TC_03_Hover_To_Element_p3(){
         driver.get("https://www.fahasa.com/");
-        closeIframe("//iframe[@id='preview-notification-frame']","#NC_IMAGE1");
+        if (driver.findElement(By.xpath("//iframe[@id='preview-notification-frame']")).isDisplayed()) {
+            closeIframe("//iframe[@id='preview-notification-frame']","#NC_IMAGE1");
+        }
+        sleepInSecond(2);
 
-        sleepInSecond(5);
-//        Assert.assertTrue(driver.findElement(By.xpath("//span[@class='icon_menu']")).isDisplayed());
+        String windowID = driver.getWindowHandle();
+        driver.switchTo().window(windowID);
         WebElement menuIcon = driver.findElement(By.cssSelector("span.icon_menu"));
         action.moveToElement(menuIcon).perform();
         sleepInSecond(2);
 
-        action.moveToElement(driver.findElement(By.xpath("//span[text()='Sách Trong Nước']"))).perform();
-        action.moveToElement(driver.findElement(By.xpath("//div[@class='fhs_column_stretch']//a[text()='Light Novel']"))).click().perform();
+        action.moveToElement(driver.findElement(By.xpath("//span[text()='Đồ Chơi']"))).perform();
+        action.moveToElement(driver.findElement(By.xpath("//div[@class='fhs_column_stretch']//a[text()='Mô Hình Nhân Vật']"))).click().perform();
 
-        closeIframe("//iframe[@id='preview-notification-frame']","#NC_IMAGE1");
-        Assert.assertTrue(driver.findElement(By.xpath("//strong[text()='Light Novel']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//strong[text()='Mô Hình Nhân Vật']")).isDisplayed());
 
     }
 
@@ -81,12 +83,9 @@ public class Topic_17_User_Interaction {
             throw new RuntimeException(e);
         }
     }
-    public void closeIframe(String frame, String btnClose){
-        if (driver.findElement(By.xpath(frame)).isDisplayed()){
-            driver.switchTo().frame(driver.findElement(By.xpath(frame)));
-            driver.findElement(By.cssSelector(btnClose)).click();
-        }
-
-
+    public void closeIframe(String frame, String btnClose) {
+        driver.switchTo().frame(driver.findElement(By.xpath(frame)));
+        driver.findElement(By.cssSelector(btnClose)).click();
     }
+
 }
