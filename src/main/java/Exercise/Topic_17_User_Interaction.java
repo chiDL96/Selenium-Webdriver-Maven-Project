@@ -12,6 +12,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Topic_17_User_Interaction {
@@ -76,7 +77,9 @@ public class Topic_17_User_Interaction {
         action.moveToElement(driver.findElement(By.xpath("//span[text()='Đồ Chơi']"))).perform();
         action.moveToElement(driver.findElement(By.xpath("//div[@class='fhs_column_stretch']//a[text()='Mô Hình Nhân Vật']"))).click().perform();
 
-        Assert.assertTrue(driver.findElement(By.xpath("//strong[text()='Mô Hình Nhân Vật']")).isDisplayed());
+
+        WebElement toySelected = driver.findElement(By.xpath("//strong[text()='Mô Hình Nhân Vật']"));
+        Assert.assertTrue(toySelected.isDisplayed());
 
     }
 
@@ -101,6 +104,17 @@ public class Topic_17_User_Interaction {
         select = new Select(driver.findElement(area));
         select.selectByVisibleText(areaSelected);
     }
+
+
+    @Test
+    public void TC_05_Click_And_Hover_Element(){
+        driver.get("https://automationfc.github.io/jquery-selectable/");
+        List<WebElement> allNumbers = driver.findElements(By.cssSelector("ol#selectable>li"));
+//        allNumbers.get(0).click();
+        action.clickAndHold(allNumbers.get(0)).moveToElement(allNumbers.get(10)).release().perform();
+        
+    }
+
 
     public void sleepInSecond(long TimeInSecond){
         try {
