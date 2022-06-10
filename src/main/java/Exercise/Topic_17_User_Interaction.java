@@ -1,9 +1,6 @@
 package Exercise;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -21,6 +18,7 @@ public class Topic_17_User_Interaction {
     JavascriptExecutor jsExecutor;
     Select select;
     String projectPath = System.getProperty("user.dir");
+    String os = System.getProperty("os.name");
 
     @BeforeClass
     public void beforeClass(){
@@ -112,7 +110,22 @@ public class Topic_17_User_Interaction {
         List<WebElement> allNumbers = driver.findElements(By.cssSelector("ol#selectable>li"));
 //        allNumbers.get(0).click();
         action.clickAndHold(allNumbers.get(0)).moveToElement(allNumbers.get(10)).release().perform();
-        
+        allNumbers = driver.findElements(By.cssSelector("ol#selectable>li.ui-selected"));
+        Assert.assertEquals(allNumbers.size(), 9);
+    }
+
+    @Test
+    public void TC_06_Hold_Control_And_Click_Multiple_Element(){
+        driver.get("https://automationfc.github.io/jquery-selectable/");
+        List<WebElement> allNumbers = driver.findElements(By.cssSelector("ol#selectable>li"));
+        if (os.contains("Mac")){
+            action.keyDown(Keys.COMMAND).perform();
+        } else {
+            action.keyDown(Keys.CONTROL).perform();
+        }
+        action.click(allNumbers.get(1)).click(allNumbers.get(7)).click(allNumbers.get(11)).perform();
+
+        action.keyUp().perform();
     }
 
 
@@ -127,5 +140,4 @@ public class Topic_17_User_Interaction {
         driver.switchTo().frame(driver.findElement(By.xpath(frame)));
         driver.findElement(By.cssSelector(btnClose)).click();
     }
-
 }
