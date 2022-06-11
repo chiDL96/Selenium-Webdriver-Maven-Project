@@ -2,7 +2,9 @@ package Exercise;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -21,7 +23,7 @@ public class Topic_17_User_Interaction {
     String os = System.getProperty("os.name");
 
     @BeforeClass
-    public void beforeClass(){
+    public void beforeClass() {
         System.setProperty("webdriver.chrome.driver", projectPath + "/BrowserDrivers/chromedriver");
         driver = new ChromeDriver();
         action = new Actions(driver);
@@ -31,12 +33,12 @@ public class Topic_17_User_Interaction {
     }
 
     @AfterClass
-    public void afterClass(){
-//        driver.close();
+    public void afterClass() {
+        driver.close();
     }
 
     @Test
-    public void TC_01_Hover_To_Element_p1(){
+    public void TC_01_Hover_To_Element_p1() {
         driver.get("https://automationfc.github.io/jquery-tooltip/");
         WebElement ageTxtbox = driver.findElement(By.cssSelector("input#age"));
         action.moveToElement(ageTxtbox).perform();
@@ -45,7 +47,7 @@ public class Topic_17_User_Interaction {
     }
 
     @Test
-    public void TC_02_Hover_To_Element_p2(){
+    public void TC_02_Hover_To_Element_p2() {
         driver.get("http://www.myntra.com/");
         WebElement kidLink = driver.findElement(By.xpath("//header[@id='desktop-header-cnt']//a[text()='Kids']"));
         action.moveToElement(kidLink).perform();
@@ -59,10 +61,10 @@ public class Topic_17_User_Interaction {
     }
 
     @Test
-    public void TC_03_Hover_To_Element_p3(){
+    public void TC_03_Hover_To_Element_p3() {
         driver.get("https://www.fahasa.com/");
         if (driver.findElement(By.xpath("//iframe[@id='preview-notification-frame']")).isDisplayed()) {
-            closeIframe("//iframe[@id='preview-notification-frame']","#NC_IMAGE1");
+            closeIframe("//iframe[@id='preview-notification-frame']", "#NC_IMAGE1");
         }
         sleepInSecond(2);
 
@@ -82,7 +84,7 @@ public class Topic_17_User_Interaction {
     }
 
     @Test
-    public void TC_04_Demo_JsExecutor(){
+    public void TC_04_Demo_JsExecutor() {
         driver.get("https://www.honda.com.vn/o-to/du-toan-chi-phi");
         WebElement banner = driver.findElement(By.xpath("//div[@class='div-cost-estimates']"));
         WebElement carType = driver.findElement(By.id("selectize-input"));
@@ -105,7 +107,7 @@ public class Topic_17_User_Interaction {
 
 
     @Test
-    public void TC_05_Click_And_Hover_Element(){
+    public void TC_05_Click_And_Hover_Element() {
         driver.get("https://automationfc.github.io/jquery-selectable/");
         List<WebElement> allNumbers = driver.findElements(By.cssSelector("ol#selectable>li"));
 //        allNumbers.get(0).click();
@@ -115,29 +117,94 @@ public class Topic_17_User_Interaction {
     }
 
     @Test
-    public void TC_06_Hold_Control_And_Click_Multiple_Element(){
+    public void TC_06_Hold_Control_And_Click_Multiple_Element() {
         driver.get("https://automationfc.github.io/jquery-selectable/");
         List<WebElement> allNumbers = driver.findElements(By.cssSelector("ol#selectable>li"));
-        if (os.contains("Mac")){
-            action.keyDown(Keys.COMMAND).perform();
-        } else {
-            action.keyDown(Keys.CONTROL).perform();
-        }
+
+        checkOsToKeyDown();
         action.click(allNumbers.get(1)).click(allNumbers.get(7)).click(allNumbers.get(11)).perform();
 
-        action.keyUp().perform();
+        checkOsToKeyUp();
+        allNumbers = driver.findElements(By.cssSelector("ol#selectable>li.ui-selected"));
+        Assert.assertEquals(allNumbers.size(), 3);
     }
 
 
-    public void sleepInSecond(long TimeInSecond){
+    @Test
+    public void TC_07_Double_Click_Chrome() {
+        driver.get("https://automationfc.github.io/basic-form/index.html");
+        WebElement btnDoubleClick = driver.findElement(By.xpath("//button[text()='Double click me']"));
+        action.doubleClick(btnDoubleClick).perform();
+        sleepInSecond(3);
+        Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
+    }
+
+    @Test
+    public void TC_08_Double_Click_Firefox() {
+        driver.get("https://automationfc.github.io/basic-form/index.html");
+        WebElement btnDoubleClick = driver.findElement(By.xpath("//button[text()='Double click me']"));
+        jsExecutor.executeScript("arguments[0].scrollIntoView(true);", btnDoubleClick);
+        action.doubleClick(btnDoubleClick).perform();
+        sleepInSecond(3);
+        Assert.assertTrue(driver.findElement(By.xpath("//p[text()='Hello Automation Guys!']")).isDisplayed());
+    }
+
+    @Test
+    public void TC_09_Right_Click() {
+        driver.get("http://swisnl.github.io/jQuery-contextMenu/demo.html");
+        WebElement btnRightClick = driver.findElement(By.xpath("//span[text()='right click me']"));
+        action.contextClick(btnRightClick).perform();
+        WebElement quitBeforeClick = driver.findElement(By.cssSelector("li.context-menu-icon-quit"));
+        action.moveToElement(quitBeforeClick).perform();
+        By quitOption = By.cssSelector("li.context-menu-item.context-menu-icon.context-menu-icon-quit.context-menu-visible");
+        sleepInSecond(3);
+        Assert.assertTrue(driver.findElement(quitOption).isDisplayed());
+        action.click(driver.findElement(quitOption)).perform();
+        sleepInSecond(3);
+        Alert alert = driver.switchTo().alert();
+        Assert.assertEquals(alert.getText(), "clicked: quit");
+        alert.accept();
+        sleepInSecond(3);
+        Assert.assertFalse(quitBeforeClick.isDisplayed());
+    }
+
+    @Test
+    public void TC_10_Drag_And_Drop_In_HTML4() {
+        driver.get("https://automationfc.github.io/kendo-drag-drop/");
+        WebElement sourceCircle = driver.findElement(By.cssSelector("div#draggable"));
+        WebElement targetCircle = driver.findElement(By.cssSelector("div#droptarget"));
+        action.dragAndDrop(sourceCircle, targetCircle).perform();
+        Assert.assertEquals(targetCircle.getText(), "You did great!");
+        String targetColor = Color.fromString(targetCircle.getCssValue("background-color")).asHex().toUpperCase();
+        Assert.assertEquals(targetColor, "#03A9F4");
+    }
+
+    public void sleepInSecond(long TimeInSecond) {
         try {
             Thread.sleep(TimeInSecond * 1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
+
     public void closeIframe(String frame, String btnClose) {
         driver.switchTo().frame(driver.findElement(By.xpath(frame)));
         driver.findElement(By.cssSelector(btnClose)).click();
+    }
+
+    public void checkOsToKeyDown() {
+        if (os.contains("Mac")) {
+            action.keyDown(Keys.COMMAND).perform();
+        } else {
+            action.keyDown(Keys.CONTROL).perform();
+        }
+    }
+
+    public void checkOsToKeyUp() {
+        if (os.contains("Mac")) {
+            action.keyUp(Keys.COMMAND).perform();
+        } else {
+            action.keyUp(Keys.CONTROL).perform();
+        }
     }
 }
