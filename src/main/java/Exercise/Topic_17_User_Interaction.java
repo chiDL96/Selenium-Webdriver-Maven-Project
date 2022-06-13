@@ -54,7 +54,7 @@ public class Topic_17_User_Interaction {
         sleepInSecond(2);
 
         WebElement kidFootwearLink = driver.findElement(By.xpath("//header[@id='desktop-header-cnt']//a[text()='Kids']/following-sibling::div//a[text()='Footwear']"));
-        action.click(kidFootwearLink).perform();
+//        action.click(kidFootwearLink).perform();
         sleepInSecond(2);
 
         Assert.assertTrue(driver.findElement(By.xpath("//span[text()='Kids Footwear']")).isDisplayed());
