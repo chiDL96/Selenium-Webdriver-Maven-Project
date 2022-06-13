@@ -2,7 +2,6 @@ package Exercise;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.Select;
@@ -14,7 +13,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Topic_17_User_Interaction {
+public class Topic_17_User_Interaction_P1 {
     WebDriver driver;
     Actions action;
     JavascriptExecutor jsExecutor;
