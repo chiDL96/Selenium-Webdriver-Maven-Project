@@ -9,6 +9,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Topic_19_Handle_Fixed_Popup {
@@ -72,6 +73,28 @@ public class Topic_19_Handle_Fixed_Popup {
         Assert.assertFalse(loginPopup.isDisplayed());
     }
 
+    @Test
+    public void TC_03_Fixed_Not_In_DOM(){
+        driver.get("https://tiki.vn/");
+
+        List<WebElement> loginPopup = driver.findElements(By.cssSelector("div.ReactModal__Overlay"));
+
+        Assert.assertEquals(loginPopup.size(), 0);
+
+        driver.findElement(By.xpath("//span[text()='Đăng Nhập / Đăng Ký']")).click();
+        sleepInSecond(3);
+
+        Assert.assertTrue(driver.findElement(By.cssSelector("div.ReactModal__Overlay")).isDisplayed());
+
+        loginPopup = driver.findElements(By.cssSelector("div.ReactModal__Overlay"));
+        Assert.assertEquals(loginPopup.size(), 1);
+
+        driver.findElement(By.cssSelector("img.close-img")).click();
+        sleepInSecond(3);
+
+        loginPopup = driver.findElements(By.cssSelector("div.ReactModal__Overlay"));
+        Assert.assertEquals(loginPopup.size(), 0);
+    }
     public void sleepInSecond(long TimeInSecond) {
         try {
             Thread.sleep(TimeInSecond * 1000);
