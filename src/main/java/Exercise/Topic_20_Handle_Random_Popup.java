@@ -50,13 +50,19 @@ public class Topic_20_Handle_Random_Popup {
 
     @Test
     public void TC_03_Random_Not_In_DOM_Dehieu_SetSize(){
-        driver.manage().window().setSize(new Dimension(1366,500));
+        driver.manage().window().setSize(new Dimension(1366, 768));
         driver.get("https://dehieu.vn/");
-        sleepInSecond(10);
+        sleepInSecond(3);
         List<WebElement> popup = driver.findElements(By.cssSelector("div.popup-content"));
-        if (popup.size() > 1 && popup.get(0).isDisplayed()){
+        if (popup.size() > 0 && popup.get(0).isDisplayed()) {
+
+            driver.findElement(By.id("popup-name")).sendKeys("abc");
+            driver.findElement(By.id("popup-email")).sendKeys("abc@gmail.coom");
+            driver.findElement(By.id("popup-phone")).sendKeys("0282882929");
+
             sleepInSecond(3);
-            driver.findElement(By.cssSelector("div.popup-content button.close")).click();
+            jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.cssSelector("div.popup-content button.close")));
+            sleepInSecond(3);
         }
 
     }
