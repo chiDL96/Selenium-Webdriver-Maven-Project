@@ -80,6 +80,10 @@ public class Topic_21_Handle_Frame_Iframe {
     @Test
     public void TC_03_Frame() {
         driver.get("https://netbanking.hdfcbank.com/netbanking/");
+        driver.switchTo().frame("login_page");
+        driver.findElement(By.name("fldLoginUserId")).sendKeys("abc");
+        driver.findElement(By.cssSelector("a.login-btn")).click();
+        Assert.assertTrue(driver.findElement(By.name("fldPassword")).isDisplayed());
 
     }
 
