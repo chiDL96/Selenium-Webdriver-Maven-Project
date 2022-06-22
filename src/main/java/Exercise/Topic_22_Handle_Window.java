@@ -98,6 +98,33 @@ public class Topic_22_Handle_Window {
         Assert.assertEquals(driver.findElement(By.cssSelector("header#header span.cdo-username")).getText(), "Automation FC");
     }
 
+    @Test
+    public void TC_04_AutomationFC() {
+        driver.get("https://automationfc.github.io/basic-form/index.html");
+        String automationParentPage = driver.getWindowHandle();
+
+        driver.findElement(By.xpath("//a[text()='GOOGLE']")).click();
+        switchToWindowByLink("https://www.google.com.vn/");
+        Assert.assertEquals(driver.getTitle(), "Google");
+        sleepInSecond(3);
+
+        switchToWindowByID(automationParentPage);
+
+        driver.findElement(By.xpath("//a[text()='FACEBOOK']")).click();
+        switchToWindowByLink("https://www.facebook.com/");
+        Assert.assertTrue(driver.getTitle().contains("Facebook"));
+
+        switchToWindowByID(automationParentPage);
+
+        driver.findElement(By.xpath("//a[text()='TIKI']")).click();
+        switchToWindowByLink("https://tiki.vn/");
+        Assert.assertTrue(driver.getTitle().contains("Tiki - Mua hàng online giá tốt, hàng chuẩn, ship nhanh"));
+
+        closeAllWindowWithoutParent(automationParentPage);
+        driver.switchTo().window(automationParentPage);
+        Assert.assertEquals(driver.getTitle(), "SELENIUM WEBDRIVER FORM DEMO");
+    }
+
     public void sleepInSecond(long TimeInSecond) {
         try {
             Thread.sleep(TimeInSecond * 1000);
@@ -109,7 +136,7 @@ public class Topic_22_Handle_Window {
     public void switchToWindowByID(String currentWindowId) {
         Set<String> allWindowId = driver.getWindowHandles();
         for (String id : allWindowId) {
-            if (!id.equals(currentWindowId)) {
+            if (id.equals(currentWindowId)) {
                 driver.switchTo().window(id);
             }
         }
@@ -135,6 +162,17 @@ public class Topic_22_Handle_Window {
             if (actualLink.contains(expectedRelativeLink)) {
                 break;
             }
+        }
+    }
+
+    public void closeAllWindowWithoutParent(String parentWindowId) {
+        Set<String> allWindowIDs = driver.getWindowHandles();
+        for (String id : allWindowIDs) {
+            if (!id.equals(parentWindowId)) {
+                driver.switchTo().window(id);
+                driver.close();
+            }
+            driver.switchTo().window(parentWindowId);
         }
     }
 
