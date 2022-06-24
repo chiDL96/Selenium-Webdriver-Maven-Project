@@ -67,7 +67,7 @@ public class Topic_22_Handle_Window {
         sleepInSecond(3);
 
         //Switch sang C (Register)
-        driver.findElement(By.cssSelector("a#register_Layer")).click();
+        driver.findElement(By.xpath("//div[text()='Register']")).click();
         sleepInSecond(3);
 
         switchToWindowByLink("/registration/createAccount");
