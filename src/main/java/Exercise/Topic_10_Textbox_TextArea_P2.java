@@ -53,6 +53,7 @@ public class Topic_10_Textbox_TextArea_P2 {
 
     @Test
     public void TC_02_Edit_Employee() throws InterruptedException {
+        driver.get("https://opensource-demo.orangehrmlive.com/");
         driver.findElement(By.id("menu_pim_viewPimModule")).click();
 
         driver.findElement(By.xpath("//table[@id='resultTable']//tbody//tr//a[text()='" + employeeID + "']")).click();

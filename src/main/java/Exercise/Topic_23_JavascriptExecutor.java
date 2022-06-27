@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.internal.EclipseInterface;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -17,12 +18,30 @@ public class Topic_23_JavascriptExecutor {
     String projectPath = System.getProperty("user.dir");
     WebDriver driver;
     JavascriptExecutor jsExecutor;
-    String emailAdress = "JoeMoe" + generateNumber() + "@gmail.com";
+    String emailAdressTest = "JoeMoe" + generateNumber() + "@gmail.com";
+
+    String emailAdress, userID, password, customerName, genderOutput, passwordTest;
+    String dateOfBirthInput, dateOfBirthOutput, addressInput, adressOutput, city, state, pinNumber, phoneNumber;
+
 
     @BeforeClass
     public void beforeClass() {
         System.setProperty("webdriver.chrome.driver", projectPath + "/BrowserDrivers/chromedriver");
         driver = new ChromeDriver();
+
+        emailAdress = "JoeMoe" + generateNumber() + "@gmail.com";
+        passwordTest = "12345678";
+        customerName = "JoeMoe";
+        genderOutput = "female";
+        dateOfBirthInput = "06/09/1966";
+        dateOfBirthOutput = "1966-06-09";
+        addressInput = "34 ChinaTower Hong Kong";
+        adressOutput = "34 ChinaTower Hong Kong";
+        city = "Hong Kong";
+        state = "HK";
+        pinNumber = "13" + generateNumber();
+        phoneNumber = "92029" + generateNumber();
+
         jsExecutor = (JavascriptExecutor) driver;
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.manage().window().maximize();
@@ -68,7 +87,7 @@ public class Topic_23_JavascriptExecutor {
         Assert.assertEquals(customerPageTitle, "Customer Service");
         scrollToElementOnDown("//input[@id='newsletter']");
         sleepInSecond(3);
-        sendkeyToElementByJS("//input[@id='newsletter']", emailAdress);
+        sendkeyToElementByJS("//input[@id='newsletter']", emailAdressTest);
         sleepInSecond(3);
         clickToElementByJS("//button[@title='Subscribe']");
         Assert.assertTrue(areExpectedTextInInnerText("Thank you for your subscription."));
@@ -80,19 +99,131 @@ public class Topic_23_JavascriptExecutor {
     }
 
     @Test
-    public void TC_02_Verify_HTML5_Validation_Message(){
+    public void TC_02_Verify_HTML5_Validation_Message_P1() {
         navigateToUrlByJS("https://automationfc.github.io/html5/index.html");
         clickToElementByJS("//input[@name='submit-btn']");
         sleepInSecond(3);
-        Assert.assertEquals(getElementValidationMessage("//input[@id='fname']"),"Please fill out this field.");
+        Assert.assertEquals(getElementValidationMessage("//input[@id='fname']"), "Please fill out this field.");
 
         sendkeyToElementByJS("//input[@id='fname']", "Dam Dao");
         clickToElementByJS("//input[@name='submit-btn']");
         sleepInSecond(3);
-        Assert.assertEquals(getElementValidationMessage("//input[@id='pass']"),"Please fill out this field.");
+        Assert.assertEquals(getElementValidationMessage("//input[@id='pass']"), "Please fill out this field.");
+
+        sendkeyToElementByJS("//input[@id='pass']", "12345678");
+        clickToElementByJS("//input[@name='submit-btn']");
+        sleepInSecond(3);
+        Assert.assertEquals(getElementValidationMessage("//input[@id='em']"), "Please fill out this field.");
+
+        sendkeyToElementByJS("//input[@id='em']", "!@!@567");
+        clickToElementByJS("//input[@name='submit-btn']");
+        sleepInSecond(3);
+    }
+
+
+    @Test
+    public void TC_03_Verify_HTML5_Validation_Message_P2() {
+        navigateToUrlByJS("https://www.pexels.com/vi-vn/join-contributor/");
+        By txtboxUserName = By.id("user_first_name");
+        By txtboxEmail = By.id("user_email");
+        By btnRegister = By.xpath("//button[contains(text(), 'Tạo tài khoản mới')]");
+
+        driver.findElement(btnRegister).click();
+        sleepInSecond(3);
+
+        Assert.assertEquals(getElementValidationMessageBy(txtboxUserName), "Please fill out this field.");
+        sleepInSecond(3);
+
+        driver.findElement(txtboxUserName).sendKeys("automation");
+        driver.findElement(btnRegister).click();
+        sleepInSecond(3);
+        Assert.assertEquals(getElementValidationMessageBy(txtboxEmail), "Please fill out this field.");
 
     }
 
+    @Test
+    public void TC_04__Verify_HTML5_Validation_Message_P3() {
+        navigateToUrlByJS("https://warranty.rode.com/");
+        Assert.assertEquals(getElementValidationMessage("//input[@id='email']"), "Please fill out this field.");
+    }
+
+    @Test
+    public void TC_05_Remove_Attribute() {
+        driver.get("http://demo.guru99.com/v4");
+        driver.findElement(By.xpath("//a[text()='here']")).click();
+        WebElement txtboxEmail = driver.findElement(By.name("emailid"));
+        txtboxEmail.sendKeys(emailAdress);
+        driver.findElement(By.name("btnLogin")).click();
+        userID = driver.findElement(By.xpath("//td[text()='User ID :']/following-sibling::td")).getText();
+        password = driver.findElement(By.xpath("//td[text()='Password :']/following-sibling::td")).getText();
+
+        driver.get("http://demo.guru99.com/v4");
+        driver.findElement(By.name("uid")).sendKeys(userID);
+        driver.findElement(By.name("password")).sendKeys(password);
+        driver.findElement(By.name("btnLogin")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("tr.heading3>td")).getText(), "Manger Id : " + userID);
+
+        driver.findElement(By.xpath("//a[text()='New Customer']")).click();
+
+        driver.findElement(By.name("name")).sendKeys(customerName);
+        driver.findElement(By.xpath("//input[@value='f']")).click();
+
+        //Remove attribute
+        removeAttributeInDOM("//input[@id='dob']", "type");
+        sleepInSecond(4);
+        driver.findElement(By.id("dob")).sendKeys(dateOfBirthInput);
+
+        driver.findElement(By.name("addr")).sendKeys(addressInput);
+        driver.findElement(By.name("city")).sendKeys(city);
+        driver.findElement(By.name("state")).sendKeys(state);
+        driver.findElement(By.name("pinno")).sendKeys(pinNumber);
+        driver.findElement(By.name("telephoneno")).sendKeys(phoneNumber);
+        driver.findElement(By.name("emailid")).sendKeys(emailAdress);
+        driver.findElement(By.name("password")).sendKeys(password);
+
+        driver.findElement(By.name("sub")).click();
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("p.heading3")).getText(), "Customer Registered Successfully!!!");
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[5]/td[text()='Customer Name']/following-sibling::td")).getText(), customerName);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[6]/td[text()='Gender']/following-sibling::td")).getText(), genderOutput);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[7]/td[text()='Birthdate']/following-sibling::td")).getText(), dateOfBirthOutput);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[8]/td[text()='Address']/following-sibling::td")).getText(), adressOutput);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[9]/td[text()='City']/following-sibling::td")).getText(), city);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[10]/td[text()='State']/following-sibling::td")).getText(), state);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[11]/td[text()='Pin']/following-sibling::td")).getText(), pinNumber);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[12]/td[text()='Mobile No.']/following-sibling::td")).getText(), phoneNumber);
+        Assert.assertEquals(driver.findElement(By.xpath("//tr[13]/td[text()='Email']/following-sibling::td")).getText(), emailAdress);
+
+    }
+
+
+    @Test
+    public void TC_06_Image_Loaded() {
+        navigateToUrlByJS("https://automationfc.github.io/basic-form/");
+        //Check image k load dc thi tra false
+        Assert.assertFalse(isImageLoaded("//img[@alt='broken_01']"));
+    }
+
+    @Test
+    public void TC_07_Create_An_Account() {
+        navigateToUrlByJS("http://live.techpanda.org/");
+        clickToElementByJS("//div[@id='header-account']//a[text()='My Account']");
+        clickToElementByJS("//a[@title='Create an Account']");
+
+        sendkeyToElementByJS("//input[@id='firstname']", customerName);
+        sendkeyToElementByJS("//input[@id='lastname']", customerName + "ABC");
+        sendkeyToElementByJS("//input[@id='email_address']", emailAdressTest);
+        sendkeyToElementByJS("//input[@id='password']", passwordTest);
+        sendkeyToElementByJS("//input[@id='confirmation']", passwordTest);
+
+        clickToElementByJS("// button[@title='Register']");
+
+        Assert.assertTrue(areExpectedTextInInnerText("Thank you for registering with Main Website Store."));
+
+        clickToElementByJS("//a[text()='Log Out']");
+        sleepInSecond(10);
+        Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/");
+    }
 
     public void sleepInSecond(long TimeInSecond) {
         try {
@@ -102,7 +233,7 @@ public class Topic_23_JavascriptExecutor {
         }
     }
 
-    public int generateNumber(){
+    public int generateNumber() {
         Random random = new Random();
         return random.nextInt(9999);
     }
@@ -158,6 +289,10 @@ public class Topic_23_JavascriptExecutor {
 
     public String getElementValidationMessage(String locator) {
         return (String) jsExecutor.executeScript("return arguments[0].validationMessage;", getElement(locator));
+    }
+
+    public String getElementValidationMessageBy(By byLocator) {
+        return (String) jsExecutor.executeScript("return arguments[0].validationMessage;", driver.findElement(byLocator));
     }
 
     public boolean isImageLoaded(String locator) {
