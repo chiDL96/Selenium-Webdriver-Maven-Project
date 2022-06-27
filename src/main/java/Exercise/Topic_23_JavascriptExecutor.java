@@ -10,12 +10,14 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Topic_23_JavascriptExecutor {
     String projectPath = System.getProperty("user.dir");
     WebDriver driver;
     JavascriptExecutor jsExecutor;
+    String emailAdress = "JoeMoe" + generateNumber() + "@gmail.com";
 
     @BeforeClass
     public void beforeClass() {
@@ -44,7 +46,7 @@ public class Topic_23_JavascriptExecutor {
     }
 
     @Test
-    public void TC_01() {
+    public void TC_01_JavascriptExecutor() {
 //        driver.get("http://live.techpanda.org/");
         //Click WebElement
         //driver.findElement(By.xpath("//div[@id='header-account']//a[text()='My Account']")).click();
@@ -53,7 +55,7 @@ public class Topic_23_JavascriptExecutor {
 //        jsExecutor.executeScript("arguments[0].click()", driver.findElement(By.xpath("//div[@id='header-account']//a[text()='My Account']")));
         navigateToUrlByJS("http://live.techpanda.org/");
         String homePageURL = (String) executeForBrowser("return document.domain;");
-        Assert.assertEquals(homePageURL, "http://live.techpanda.org/");
+        Assert.assertEquals(homePageURL, "live.techpanda.org");
         clickToElementByJS("//a[text()='Mobile']");
         sleepInSecond(3);
         clickToElementByJS("//a[@title='Samsung Galaxy']/parent::h2/following-sibling::div//button");
@@ -65,6 +67,29 @@ public class Topic_23_JavascriptExecutor {
         String customerPageTitle = (String) executeForBrowser("return document.title;");
         Assert.assertEquals(customerPageTitle, "Customer Service");
         scrollToElementOnDown("//input[@id='newsletter']");
+        sleepInSecond(3);
+        sendkeyToElementByJS("//input[@id='newsletter']", emailAdress);
+        sleepInSecond(3);
+        clickToElementByJS("//button[@title='Subscribe']");
+        Assert.assertTrue(areExpectedTextInInnerText("Thank you for your subscription."));
+
+        navigateToUrlByJS("https://demo.guru99.com/v4/");
+        sleepInSecond(5);
+        String guruPageURL = (String) executeForBrowser("return document.domain;");
+        Assert.assertEquals(guruPageURL, "demo.guru99.com");
+    }
+
+    @Test
+    public void TC_02_Verify_HTML5_Validation_Message(){
+        navigateToUrlByJS("https://automationfc.github.io/html5/index.html");
+        clickToElementByJS("//input[@name='submit-btn']");
+        sleepInSecond(3);
+        Assert.assertEquals(getElementValidationMessage("//input[@id='fname']"),"Please fill out this field.");
+
+        sendkeyToElementByJS("//input[@id='fname']", "Dam Dao");
+        clickToElementByJS("//input[@name='submit-btn']");
+        sleepInSecond(3);
+        Assert.assertEquals(getElementValidationMessage("//input[@id='pass']"),"Please fill out this field.");
 
     }
 
@@ -75,6 +100,11 @@ public class Topic_23_JavascriptExecutor {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int generateNumber(){
+        Random random = new Random();
+        return random.nextInt(9999);
     }
 
     public Object executeForBrowser(String javaScript) {
