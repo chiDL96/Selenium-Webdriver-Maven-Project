@@ -97,11 +97,6 @@ public class Topic_24_Handle_Upload_File {
         Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name']/a[@title='" + image3 + "']")).isDisplayed());
     }
 
-    @Test
-    public void TC_03_(){
-
-    }
-
     public void sleepInSecond(long TimeInSecond) {
         try {
             Thread.sleep(TimeInSecond * 1000);
