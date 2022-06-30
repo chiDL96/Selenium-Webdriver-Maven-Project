@@ -43,7 +43,6 @@ public class Topic_24_Handle_Upload_File {
     public void TC_01_One_File_One_Time(){
         driver.get("https://blueimp.github.io/jQuery-File-Upload/");
 
-        WebElement btnUpload = driver.findElement(By.xpath("//button[@class='btn btn-primary start']"));
         By btnUploadImage = By.xpath("//input[@type='file']");
 
         //selenium sendkeys method
@@ -70,10 +69,9 @@ public class Topic_24_Handle_Upload_File {
     }
 
     @Test
-    public void TC_01_Multiple_File_One_Time(){
+    public void TC_02_Multiple_File_One_Time(){
         driver.get("https://blueimp.github.io/jQuery-File-Upload/");
 
-        WebElement btnUpload = driver.findElement(By.xpath("//button[@class='btn btn-primary start']"));
         By btnUploadImage = By.xpath("//input[@type='file']");
 
         //selenium sendkeys method upload 3 file
@@ -96,6 +94,28 @@ public class Topic_24_Handle_Upload_File {
         Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name']/a[@title='" + image2 + "']")).isDisplayed());
         Assert.assertTrue(driver.findElement(By.xpath("//p[@class='name']/a[@title='" + image3 + "']")).isDisplayed());
     }
+
+    @Test
+    public void TC_03_Upload_File(){
+        driver.get("https://gofile.io/uploadFiles");
+        By btnUploadImage = By.xpath("//input[@type='file']");
+
+        //selenium sendkeys method upload 3 file
+        driver.findElement(btnUploadImage).sendKeys(image1FilePath + "\n" + image2FilePath + "\n" + image3FilePath);
+        sleepInSecond(5);
+
+        Assert.assertTrue(driver.findElement(By.xpath("//h5[text()='Your files have been successfully uploaded']")).isDisplayed());
+
+        driver.findElement(By.cssSelector("button#rowUploadSuccess-showFiles")).click();
+        sleepInSecond(2);
+
+        Assert.assertTrue(driver.findElement(By.xpath("//span[@class='contentName' and contains(text(), '" + image1 + "')]/parent::a/parent::div/following-sibling::div//button[@id='contentId-download']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//span[@class='contentName' and contains(text(), '" + image2 + "')]/parent::a/parent::div/following-sibling::div//button[@id='contentId-download']")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//span[@class='contentName' and contains(text(), '" + image3 + "')]/parent::a/parent::div/following-sibling::div//button[@id='contentId-download']")).isDisplayed());
+
+
+    }
+
 
     public void sleepInSecond(long TimeInSecond) {
         try {
