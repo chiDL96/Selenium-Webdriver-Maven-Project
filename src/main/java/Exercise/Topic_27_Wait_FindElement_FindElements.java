@@ -14,13 +14,11 @@ import java.util.concurrent.TimeUnit;
 public class Topic_27_Wait_FindElement_FindElements {
     String projectPath = System.getProperty("user.dir");
     WebDriver driver;
-    WebDriverWait explicitWait;
 
     @BeforeClass
     public void beforeClass() {
         System.setProperty("webdriver.chrome.driver", projectPath + "/BrowserDrivers/chromedriver");
         driver = new ChromeDriver();
-        explicitWait = new WebDriverWait(driver, 15);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         driver.get("https://www.facebook.com/");
@@ -74,6 +72,8 @@ public class Topic_27_Wait_FindElement_FindElements {
         driver.findElements(By.xpath("//input[@id='automation']"));
         System.out.println("End time " + getCurrentTime());
     }
+
+
 
     public String getCurrentTime() {
         Date date = new Date();
