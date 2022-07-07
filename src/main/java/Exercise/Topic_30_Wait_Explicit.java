@@ -1,9 +1,9 @@
 package Exercise;
 
-import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,7 +20,7 @@ public class Topic_30_Wait_Explicit {
     //Wait ro rang: voi cac dieu kien/status cu the
     WebDriverWait explicitWait;
 
-    String folderPath = "/UploadFiles";
+    String folderPath = "/UploadFiles/";
     String img1 = "test1.jpeg";
     String img2 = "test2.jpeg";
     String img3 = "test3.jpeg";
@@ -39,7 +39,7 @@ public class Topic_30_Wait_Explicit {
 
         //Wait ngam dinh: k co 1 element/ dieu kien/ status nao ro rang
         //Ngam dinh cho viec tim element
-//        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
         driver.manage().window().maximize();
     }
@@ -128,8 +128,7 @@ public class Topic_30_Wait_Explicit {
     @Test
     public void TC_05_Upload_File() {
         driver.get("https://gofile.io/uploadFiles");
-        //div.progress-bar
-        ////input[@type='file']
+
         WebElement btnUplooad = driver.findElement(By.xpath("//input[@type='file']"));
         btnUplooad.sendKeys(img1FolderUpload + "\n" + img2FolderUpload + "\n" + img3FolderUpload);
 
@@ -142,7 +141,13 @@ public class Topic_30_Wait_Explicit {
 
         driver.findElement(By.xpath("//a[@id='rowUploadSuccess-downloadPage']")).click();
 
-        driver.switchTo().window()
 
+        WebElement btnDownload1 = driver.findElement(By.xpath("//span[text()='" + img1 + "']/parent::a/parent::div//following-sibling::div//button[@id='contentId-download']"));
+        WebElement btnDownload2 = driver.findElement(By.xpath("//span[text()='" + img2 + "']/parent::a/parent::div//following-sibling::div//button[@id='contentId-download']"));
+        WebElement btnDownload3 = driver.findElement(By.xpath("//span[text()='" + img3 + "']/parent::a/parent::div//following-sibling::div//button[@id='contentId-download']"));
+
+        Assert.assertFalse(btnDownload1.isDisplayed());
+        Assert.assertFalse(btnDownload2.isDisplayed());
+        Assert.assertFalse(btnDownload3.isDisplayed());
     }
 }
