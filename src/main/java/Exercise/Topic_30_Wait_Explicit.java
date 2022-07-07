@@ -46,7 +46,7 @@ public class Topic_30_Wait_Explicit {
 
     @AfterClass
     public void afterClass() {
-        driver.close();
+        driver.quit();
     }
 
     @Test
