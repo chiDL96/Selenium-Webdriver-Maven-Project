@@ -56,25 +56,26 @@ public class Topic_31_Wait_Mix_Implicit_Explicit {
     }
 
     @Test
-    public void TC_03_Element_Not_Found_Only_Explicit(){
+    public void TC_03_Element_Not_Found_Only_Explicit() {
         driver.get("https://www.facebook.com/");
         By fakeIDBy1 = By.id("fake1");
         explicitWait = new WebDriverWait(driver, 15);
         System.out.println("Start implicit: " + getTimeNow());
-        explicitWait.until(ExpectedConditions.visibilityOfElementLocated(fakeIDBy1));
+        explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(fakeIDBy1));
         System.out.println("End implicit: " + getTimeNow());
     }
 
     @Test
-    public void TC_04_Element_Not_Found_Mix(){
+    public void TC_04_Element_Not_Found_Mix() {
         //implicir < explicit
         //implicir = explicit
         //implicir > explicit
 
     }
 
-    public String getTimeNow(){
+    public String getTimeNow() {
         Date date = new Date();
         return date.toString();
     }
 }
+
