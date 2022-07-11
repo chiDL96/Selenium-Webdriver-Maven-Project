@@ -40,9 +40,9 @@ public class Topic_31_Wait_Mix_Implicit_Explicit {
 
 
         explicitWait = new WebDriverWait(driver, 15);
-        System.out.println("Start implicit: " + getTimeNow());
+        System.out.println("Start explicit: " + getTimeNow());
         explicitWait.until(ExpectedConditions.visibilityOfElementLocated(emailIDBy));
-        System.out.println("End implicit: " + getTimeNow());
+        System.out.println("End explicit: " + getTimeNow());
     }
 
     @Test
@@ -60,9 +60,9 @@ public class Topic_31_Wait_Mix_Implicit_Explicit {
         driver.get("https://www.facebook.com/");
         By fakeIDBy1 = By.id("fake1");
         explicitWait = new WebDriverWait(driver, 15);
-        System.out.println("Start implicit: " + getTimeNow());
-        explicitWait.until(ExpectedConditions.visibilityOfElementLocated(fakeIDBy1));
-        System.out.println("End implicit: " + getTimeNow());
+        System.out.println("Start explicit: " + getTimeNow());
+        explicitWait.until(ExpectedConditions.invisibilityOfElementLocated(fakeIDBy1));
+        System.out.println("End explicit: " + getTimeNow());
     }
 
     @Test
@@ -70,6 +70,24 @@ public class Topic_31_Wait_Mix_Implicit_Explicit {
         //implicir < explicit
         //implicir = explicit
         //implicir > explicit
+        driver.get("https://www.facebook.com/");
+        By fakeIDBy1 = By.id("fake1");
+
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        System.out.println("Start implicit: " + getTimeNow());
+        try {
+            Assert.assertTrue(driver.findElement(fakeIDBy1).isDisplayed());
+        } catch (Exception e){
+            System.out.println("End implicit: " + getTimeNow());
+        }
+
+        explicitWait = new WebDriverWait(driver, 15);
+        System.out.println("Start explicit: " + getTimeNow());
+        try {
+            explicitWait.until(ExpectedConditions.visibilityOfElementLocated(fakeIDBy1));
+        } catch (Exception e){
+            System.out.println("End explicit: " + getTimeNow());
+        }
 
     }
 
