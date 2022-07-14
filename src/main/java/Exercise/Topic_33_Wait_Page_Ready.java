@@ -85,5 +85,5 @@ public class Topic_33_Wait_Page_Ready {
         };
         return explicitWait.until(jQueryLoad) && explicitWait.until(jsLoad);
     }
-
+//git
 }
