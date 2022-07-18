@@ -3,7 +3,10 @@ package Exercise;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,6 +15,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Topic_33_Wait_Page_Ready {
@@ -19,12 +23,14 @@ public class Topic_33_Wait_Page_Ready {
     WebDriverWait explicitWait;
     String projectPath = System.getProperty("user.dir");
     JavascriptExecutor jsExecutor;
+    Actions action;
 
     @BeforeClass
     public void beforeClass() {
-        System.setProperty("webdriver.chrome.driver", projectPath + "/BrowserDrivers/chromedriver");
-        driver = new ChromeDriver();
+        System.setProperty("webdriver.gecko.driver", projectPath + "/BrowserDrivers/geckodriver");
+        driver = new FirefoxDriver();
         explicitWait = new WebDriverWait(driver, 30);
+        action = new Actions(driver);
         driver.manage().window().maximize();
     }
 
@@ -58,12 +64,34 @@ public class Topic_33_Wait_Page_Ready {
         driver.findElement(By.id("btnLogin")).click();
 
         //wait page ready
-//        Assert.assertTrue(isPageLoadedSuccess());
-//        Assert.assertTrue(driver.findElement(By.id("div_graph_display_emp_distribution")).isDisplayed());
+        Assert.assertTrue(isPageLoadedSuccess());
+        Assert.assertTrue(driver.findElement(By.id("div_graph_display_emp_distribution")).isDisplayed());
 
         //wait cho  loading icon  bien mat
-        explicitWait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("div.loadmask"))));
-        Assert.assertTrue(driver.findElement(By.id("div_graph_display_emp_distribution")).isDisplayed());
+//        explicitWait.until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(By.cssSelector("div.loadmask"))));
+//        Assert.assertTrue(driver.findElement(By.id("div_graph_display_emp_distribution")).isDisplayed());
+    }
+
+
+    @Test
+    public void TC_04_Blog_Page_Ready() {
+        driver.get("https://blog.testproject.io/");
+        if (driver.findElement(By.xpath("//div[@id='mailch-bg']")).isDisplayed()) {
+            driver.findElement(By.xpath("//div[@id='close-mailch']")).click();
+        }
+
+        action.moveToElement(driver.findElement(By.cssSelector("section#search-2 input.search-field"))).perform();
+        Assert.assertTrue(isPageLoadedSuccess());
+
+        driver.findElement(By.cssSelector("section#search-2 input.search-field")).sendKeys("Selenium");
+        driver.findElement(By.cssSelector("section#search-2 span.glass")).click();
+
+        Assert.assertTrue(isPageLoadedSuccess());
+
+        List<WebElement> firstAllPostTitle = driver.findElements(By.cssSelector("h3.post-tiitle>a"));
+        for (WebElement postTitle : firstAllPostTitle) {
+            Assert.assertTrue(postTitle.getText().contains("Selenium"));
+        }
     }
 
 
