@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
-<!--    <groups>-->
-<!--        <run>-->
-<!--            <include name="user"/>-->
-<!--        </run>-->
-<!--    </groups>-->
-    <test verbose="2" preserve-order="true" name="/Users/unstatic/Desktop/Selenium-course26/03 - Selenium Webdriver Maven Project/src/main/java/testNG">
-        <classes>
-            <class name="testNG.tech.Topic_01_Annotations"/>
-        </classes>
+    <groups>
+        <run>
+            <include name="admin"/>
+        </run>
+    </groups>
+    <test verbose="2" preserve-order="true"
+          name="/Users/unstatic/Desktop/Selenium-course26/03 - Selenium Webdriver Maven Project/src/main/java/testNG">
+        <!--        <classes>-->
+        <!--            <class name="testNG.tech.Topic_01_Annotations"/>-->
+        <!--        </classes>-->
+
+        <packages>
+            <package name="testNG.admin"></package>
+        </packages>
     </test>
 
 </suite>
