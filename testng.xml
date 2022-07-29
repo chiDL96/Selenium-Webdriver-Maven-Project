@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
-    <groups>
-        <run>
-            <include name="admin"/>
-        </run>
-    </groups>
+    <!--    <groups>-->
+    <!--        <run>-->
+    <!--            <include name="admin"/>-->
+    <!--        </run>-->
+    <!--    </groups>-->
     <test verbose="2" preserve-order="true"
-          name="/Users/unstatic/Desktop/Selenium-course26/03 - Selenium Webdriver Maven Project/src/main/java/testNG">
-        <!--        <classes>-->
-        <!--            <class name="testNG.tech.Topic_01_Annotations"/>-->
-        <!--        </classes>-->
+          name="run test in Chrome">
 
-        <packages>
-            <package name="testNG.admin"></package>
-        </packages>
+        <parameter name="browser" value="chrome"></parameter>
+        <classes>
+            <class name="testNG.tech.Topic_05_Multiple_Browser"/>
+        </classes>
+
+        <!--        <packages>-->
+        <!--            <package name="testNG.admin"></package>-->
+        <!--        </packages>-->
+    </test>
+
+    <test verbose="2" preserve-order="true"
+          name="run test in Firefox">
+
+        <parameter name="browser" value="firefox"></parameter>
+        <classes>
+            <class name="testNG.tech.Topic_05_Multiple_Browser"/>
+        </classes>
+    </test>
+
+    <test verbose="2" preserve-order="true"
+          name="run test in Edge">
+
+        <parameter name="browser" value="edge"></parameter>
+        <classes>
+            <class name="testNG.tech.Topic_05_Multiple_Browser"/>
+        </classes>
     </test>
 
 </suite>
